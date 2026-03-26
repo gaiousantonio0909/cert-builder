@@ -1,6 +1,6 @@
 {
-  "name": "cert-builder",
-  "version": "2.0.0",
+  "name": "cert-web-tool",
+  "version": "0.2.0",
   "description": "A certificate builder powered by GrapeJS with CKEditor4, shortcodes, and PDF export",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
