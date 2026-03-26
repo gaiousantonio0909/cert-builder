@@ -1,8 +1,8 @@
-# cert-builder
+# cert-web-tool
 
 > A certificate builder powered by GrapeJS — Image Background, CKEditor 4 text, shortcodes, columns layout, theming, and PDF export.
 
-[![npm version](https://img.shields.io/npm/v/cert-builder.svg)](https://www.npmjs.com/package/cert-builder)
+[![npm version](https://img.shields.io/npm/v/cert-web-tool.svg)](https://www.npmjs.com/package/cert-web-tool)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![CI](https://github.com/gaiousantonio0909/cert-builder/actions/workflows/ci.yml/badge.svg)](https://github.com/gaiousantonio0909/cert-builder/actions/workflows/ci.yml)
 
