@@ -81,6 +81,7 @@
     "react",
     "vue"
   ],
+  "homepage": "https://www.npmjs.com/package/cert-web-tool",
   "author": "gaiousantonio0909",
   "license": "MIT",
   "packageManager": "pnpm@9.15.0",
