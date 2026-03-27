@@ -15,7 +15,7 @@ export function registerShortcodePlugin(
       defaults: {
         tagName: 'span',
         name: 'Shortcode',
-        draggable: '[data-cert-canvas]',
+        draggable: '[data-cert-canvas], [data-gjs-droppable], .cell, .row, .cert-column, .cert-row, [data-cert-text]',
         droppable: false,
         editable: false,
         attributes: {
@@ -24,7 +24,6 @@ export function registerShortcodePlugin(
         },
         style: {
           display: 'inline-block',
-          position: 'absolute',
           'background-color': '#e0f2fe',
           color: '#0369a1',
           border: '1px solid #7dd3fc',
@@ -33,7 +32,6 @@ export function registerShortcodePlugin(
           'font-size': '13px',
           'font-family': 'monospace',
           cursor: 'move',
-          'z-index': '2',
           'white-space': 'nowrap',
         },
         traits: [

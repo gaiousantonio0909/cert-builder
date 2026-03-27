@@ -83,6 +83,16 @@ function buildThemeCss(t: Required<CertBuilderTheme>): string {
     .gjs-two-color { color: var(--cb-text) !important; }
     .gjs-three-bg { background-color: var(--cb-primary) !important; }
     .gjs-four-color, .gjs-four-color-h:hover { color: var(--cb-primary) !important; }
+    /* RTE toolbar */
+    .gjs-rte-actionbar { display: flex !important; flex-wrap: wrap !important; align-items: center !important; gap: 2px;
+      padding: 4px 6px !important; background: #fff !important; border: 1px solid var(--cb-border, #e2e8f0) !important;
+      border-radius: 4px !important; box-shadow: 0 2px 8px rgba(0,0,0,.1) !important; }
+    .gjs-rte-action { padding: 2px 6px !important; border: none !important; background: none !important;
+      cursor: pointer; border-radius: 3px !important; }
+    .gjs-rte-action:hover { background: #f0f4f8 !important; }
+    .gjs-rte-action:has(select) { width: auto !important; display: inline-flex !important; align-items: center !important; }
+    .gjs-rte-action select { border: 1px solid var(--cb-border, #e2e8f0); border-radius: 3px;
+      padding: 2px 4px; font-size: 12px; background: #fff; cursor: pointer; min-width: 150px; }
     `;
 }
 

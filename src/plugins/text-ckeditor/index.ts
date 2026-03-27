@@ -28,7 +28,6 @@ export function registerTextPlugin(
           color: '#000',
           'min-width': '50px',
           'min-height': '24px',
-          'z-index': '1',
         },
       },
     },
@@ -95,14 +94,57 @@ export function registerTextPlugin(
         if (rte?.destroy) rte.destroy();
       },
     });
-  } else if (shortcodes.length > 0) {
-    // No CKEditor – add shortcode buttons to GrapesJS built-in RTE toolbar
-    for (const key of shortcodes) {
-      editor.RichTextEditor.add(`shortcode-${key}`, {
-        icon: `<span style="font-size:11px;font-family:monospace;white-space:nowrap;">{{${key}}}</span>`,
-        result: (rte: any) => rte.insertHTML(`{{${key}}}`),
-      });
-    }
+  }
+
+  // Always add the shortcode hover dropdown to the built-in RTE toolbar
+  if (shortcodes.length > 0) {
+    editor.RichTextEditor.add('shortcode-menu', {
+      icon: (() => {
+        // Wrapper with hover behavior
+        const wrapper = document.createElement('div');
+        wrapper.style.cssText = 'position:relative;display:inline-block;cursor:pointer;font-size:12px;font-family:sans-serif;white-space:nowrap;padding:2px 4px;';
+        wrapper.textContent = 'Short Codes ▾';
+
+        // Dropdown list (hidden by default, shown on hover)
+        const dropdown = document.createElement('div');
+        dropdown.style.cssText = 'display:none;position:absolute;top:100%;left:0;z-index:9999;background:#fff;border:1px solid #ccc;border-radius:4px;box-shadow:0 4px 12px rgba(0,0,0,.15);min-width:160px;max-height:200px;overflow-y:auto;';
+
+        for (const key of shortcodes) {
+          const item = document.createElement('div');
+          item.textContent = `{{${key}}}`;
+          item.style.cssText = 'padding:6px 12px;cursor:pointer;font-size:12px;font-family:sans-serif;white-space:nowrap;';
+          item.addEventListener('mouseenter', () => {
+            item.style.backgroundColor = '#f0f4f8';
+          });
+          item.addEventListener('mouseleave', () => {
+            item.style.backgroundColor = '';
+          });
+          // mousedown fires BEFORE blur — so the iframe selection is still active
+          item.addEventListener('mousedown', (e) => {
+            e.preventDefault(); // prevent focus steal
+            const frame = editor.Canvas.getFrameEl() as HTMLIFrameElement | null;
+            if (frame?.contentDocument) {
+              frame.contentDocument.execCommand('insertText', false, `{{${key}}}`);
+            }
+            dropdown.style.display = 'none';
+          });
+          dropdown.appendChild(item);
+        }
+
+        wrapper.appendChild(dropdown);
+
+        // Show/hide on hover
+        wrapper.addEventListener('mouseenter', () => {
+          dropdown.style.display = 'block';
+        });
+        wrapper.addEventListener('mouseleave', () => {
+          dropdown.style.display = 'none';
+        });
+
+        return wrapper;
+      })(),
+      result: () => { /* handled by mousedown on items */ },
+    });
   }
 
   editor.BlockManager.add(BLOCK_ID, {
