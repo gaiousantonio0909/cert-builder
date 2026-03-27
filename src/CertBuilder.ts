@@ -206,6 +206,14 @@ export class CertBuilder {
                         ],
                     },
                     {
+                        name: 'Position',
+                        open: false,
+                        properties: [
+                            'position', 'top', 'right', 'bottom', 'left',
+                            'z-index', 'overflow',
+                        ],
+                    },
+                    {
                         name: 'Spacing',
                         open: false,
                         properties: [
@@ -226,7 +234,18 @@ export class CertBuilder {
                         properties: [
                             'font-family', 'font-size', 'font-weight',
                             'letter-spacing', 'line-height', 'text-align',
+                            'text-decoration', 'text-transform',
                             'color',
+                        ],
+                    },
+                    {
+                        name: 'Decorations',
+                        open: false,
+                        properties: [
+                            'background-color',
+                            'border', 'border-top', 'border-right',
+                            'border-bottom', 'border-left',
+                            'border-radius', 'box-shadow', 'opacity',
                         ],
                     },
                 ],
