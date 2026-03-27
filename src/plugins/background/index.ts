@@ -48,54 +48,23 @@ export function registerBackgroundPlugin(
             changeProp: true,
           },
           {
-            type: 'number',
-            name: 'paddingTop',
-            label: 'Padding Top (px)',
+            type: 'select',
+            name: 'backgroundRepeat',
+            label: 'Background Repeat',
+            options: [
+              { id: 'no-repeat', label: 'No Repeat' },
+              { id: 'repeat', label: 'Repeat' },
+              { id: 'repeat-x', label: 'Repeat X' },
+              { id: 'repeat-y', label: 'Repeat Y' },
+            ],
             changeProp: true,
-            default: 0,
-            min: 0,
-          },
-          {
-            type: 'number',
-            name: 'paddingRight',
-            label: 'Padding Right (px)',
-            changeProp: true,
-            default: 0,
-            min: 0,
-          },
-          {
-            type: 'number',
-            name: 'paddingBottom',
-            label: 'Padding Bottom (px)',
-            changeProp: true,
-            default: 0,
-            min: 0,
-          },
-          {
-            type: 'number',
-            name: 'paddingLeft',
-            label: 'Padding Left (px)',
-            changeProp: true,
-            default: 0,
-            min: 0,
           },
         ],
       },
       init(this: any) {
         this.listenTo(this, 'change:backgroundImage', this.onBgImageChange);
         this.listenTo(this, 'change:backgroundSize', this.onBgSizeChange);
-        this.listenTo(this, 'change:paddingTop', this.onPaddingChange);
-        this.listenTo(this, 'change:paddingRight', this.onPaddingChange);
-        this.listenTo(this, 'change:paddingBottom', this.onPaddingChange);
-        this.listenTo(this, 'change:paddingLeft', this.onPaddingChange);
-      },
-      onPaddingChange(this: any) {
-        this.addStyle({
-          'padding-top': `${this.get('paddingTop') || 0}px`,
-          'padding-right': `${this.get('paddingRight') || 0}px`,
-          'padding-bottom': `${this.get('paddingBottom') || 0}px`,
-          'padding-left': `${this.get('paddingLeft') || 0}px`,
-        });
+        this.listenTo(this, 'change:backgroundRepeat', this.onBgRepeatChange);
       },
       onBgImageChange(this: any) {
         const url = this.get('backgroundImage') as string;
@@ -108,6 +77,10 @@ export function registerBackgroundPlugin(
       onBgSizeChange(this: any) {
         const size = (this.get('backgroundSize') as string) || 'cover';
         this.addStyle({ 'background-size': size });
+      },
+      onBgRepeatChange(this: any) {
+        const repeat = (this.get('backgroundRepeat') as string) || 'no-repeat';
+        this.addStyle({ 'background-repeat': repeat });
       },
     },
   });
