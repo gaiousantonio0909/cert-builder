@@ -10,82 +10,7 @@ export function registerBackgroundPlugin(
 ): void {
   const { width = 794, height = 1123, onUpload } = options;
 
-  editor.DomComponents.addType(TYPE_ID, {
-    model: {
-      defaults: {
-        tagName: 'div',
-        name: 'Background',
-        draggable: false,
-        droppable: true,
-        removable: false,
-        copyable: false,
-        attributes: { 'data-cert-canvas': 'true' },
-        style: {
-          width: `${width}px`,
-          height: `${height}px`,
-          position: 'relative',
-          'background-size': 'cover',
-          'background-position': 'center',
-          'background-repeat': 'no-repeat',
-          overflow: 'hidden',
-        },
-        traits: [
-          {
-            type: 'text',
-            name: 'backgroundImage',
-            label: 'Background Image URL',
-            changeProp: true,
-          },
-          {
-            type: 'select',
-            name: 'backgroundSize',
-            label: 'Background Size',
-            options: [
-              { id: 'cover', label: 'Cover' },
-              { id: 'contain', label: 'Contain' },
-              { id: '100% 100%', label: 'Stretch' },
-            ],
-            changeProp: true,
-          },
-          {
-            type: 'select',
-            name: 'backgroundRepeat',
-            label: 'Background Repeat',
-            options: [
-              { id: 'no-repeat', label: 'No Repeat' },
-              { id: 'repeat', label: 'Repeat' },
-              { id: 'repeat-x', label: 'Repeat X' },
-              { id: 'repeat-y', label: 'Repeat Y' },
-            ],
-            changeProp: true,
-          },
-        ],
-      },
-      init(this: any) {
-        this.listenTo(this, 'change:backgroundImage', this.onBgImageChange);
-        this.listenTo(this, 'change:backgroundSize', this.onBgSizeChange);
-        this.listenTo(this, 'change:backgroundRepeat', this.onBgRepeatChange);
-      },
-      onBgImageChange(this: any) {
-        const url = this.get('backgroundImage') as string;
-        if (url) {
-          this.addStyle({ 'background-image': `url(${url})` });
-        } else {
-          this.removeStyle('background-image');
-        }
-      },
-      onBgSizeChange(this: any) {
-        const size = (this.get('backgroundSize') as string) || 'cover';
-        this.addStyle({ 'background-size': size });
-      },
-      onBgRepeatChange(this: any) {
-        const repeat = (this.get('backgroundRepeat') as string) || 'no-repeat';
-        this.addStyle({ 'background-repeat': repeat });
-      },
-    },
-  });
-
-  // ── File-upload trait (shown only when onUpload is provided) ──
+  // ── Register file-upload trait type BEFORE the component type ──
   if (onUpload) {
     editor.TraitManager.addType('cert-file-upload', {
       createInput({ trait }: any) {
@@ -132,17 +57,92 @@ export function registerBackgroundPlugin(
         // no-op — we push values imperatively above
       },
     });
+  }
 
-    // Extend the background type to include the upload trait
-    const origDefaults = editor.DomComponents.getType(TYPE_ID).model.prototype.defaults;
-    const traits = [...(origDefaults.traits || [])];
+  // ── Build traits array upfront, including upload if onUpload is provided ──
+  const traits: any[] = [
+    {
+      type: 'text',
+      name: 'backgroundImage',
+      label: 'Background Image URL',
+      changeProp: true,
+    },
+    {
+      type: 'select',
+      name: 'backgroundSize',
+      label: 'Background Size',
+      options: [
+        { id: 'cover', label: 'Cover' },
+        { id: 'contain', label: 'Contain' },
+        { id: '100% 100%', label: 'Stretch' },
+      ],
+      changeProp: true,
+    },
+    {
+      type: 'select',
+      name: 'backgroundRepeat',
+      label: 'Background Repeat',
+      options: [
+        { id: 'no-repeat', label: 'No Repeat' },
+        { id: 'repeat', label: 'Repeat' },
+        { id: 'repeat-x', label: 'Repeat X' },
+        { id: 'repeat-y', label: 'Repeat Y' },
+      ],
+      changeProp: true,
+    },
+  ];
+  if (onUpload) {
     traits.push({
       type: 'cert-file-upload',
       name: 'backgroundUpload',
       label: 'Upload Background',
     });
-    origDefaults.traits = traits;
   }
+
+  editor.DomComponents.addType(TYPE_ID, {
+    model: {
+      defaults: {
+        tagName: 'div',
+        name: 'Background',
+        draggable: false,
+        droppable: true,
+        removable: false,
+        copyable: false,
+        attributes: { 'data-cert-canvas': 'true' },
+        style: {
+          width: `${width}px`,
+          height: `${height}px`,
+          position: 'relative',
+          'background-size': 'cover',
+          'background-position': 'center',
+          'background-repeat': 'no-repeat',
+          overflow: 'hidden',
+        },
+        traits,
+      },
+      init(this: any) {
+        this.listenTo(this, 'change:backgroundImage', this.onBgImageChange);
+        this.listenTo(this, 'change:backgroundSize', this.onBgSizeChange);
+        this.listenTo(this, 'change:backgroundRepeat', this.onBgRepeatChange);
+      },
+      onBgImageChange(this: any) {
+        const url = this.get('backgroundImage') as string;
+        if (url) {
+          this.addStyle({ 'background-image': `url(${url})` });
+        } else {
+          this.removeStyle('background-image');
+        }
+      },
+      onBgSizeChange(this: any) {
+        const size = (this.get('backgroundSize') as string) || 'cover';
+        this.addStyle({ 'background-size': size });
+      },
+      onBgRepeatChange(this: any) {
+        const repeat = (this.get('backgroundRepeat') as string) || 'no-repeat';
+        this.addStyle({ 'background-repeat': repeat });
+      },
+    },
+  });
 
   editor.BlockManager.add(BLOCK_ID, {
     id: BLOCK_ID,
