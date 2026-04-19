@@ -23,6 +23,9 @@ const DEFAULT_THEME: Required<CertBuilderTheme> = {
     canvasBg: '#f7fafc',
     border: '#e2e8f0',
     highlight: '#4a5568',
+    text: '#2d3748',
+    textMuted: '#718096',
+    inputBg: '#ffffff',
 };
 
 function buildThemeCss(t: Required<CertBuilderTheme>): string {
@@ -35,7 +38,9 @@ function buildThemeCss(t: Required<CertBuilderTheme>): string {
       --cb-canvas-bg: ${t.canvasBg};
       --cb-border: ${t.border};
       --cb-highlight: ${t.highlight};
-      --cb-text: #2d3748;
+      --cb-text: ${t.text};
+      --cb-text-muted: ${t.textMuted};
+      --cb-input-bg: ${t.inputBg};
     }
     /* Selected component outline */
     .gjs-selected { outline: 2px solid var(--cb-highlight) !important; outline-offset: -2px; }
@@ -60,7 +65,7 @@ function buildThemeCss(t: Required<CertBuilderTheme>): string {
       font-weight: 600; letter-spacing: .3px; }
     /* Traits panel */
     .gjs-trt-trait { border-bottom: 1px solid var(--cb-border); }
-    .gjs-trt-trait .gjs-label { color: var(--cb-text); }
+    .gjs-trt-trait .gjs-label { color: var(--cb-text-muted); }
     .gjs-field { background: #f7fafc; border: 1px solid var(--cb-border); border-radius: 4px; }
     .gjs-field:focus-within { border-color: var(--cb-primary); box-shadow: 0 0 0 2px color-mix(in srgb, var(--cb-primary) 20%, transparent); }
     /* Style Manager */
@@ -91,6 +96,16 @@ function buildThemeCss(t: Required<CertBuilderTheme>): string {
       cursor: pointer; border-radius: 3px !important; }
     .gjs-rte-action:hover { background: #f0f4f8 !important; }
     .gjs-rte-action:last-child { width: auto !important; min-width: 90px !important; }
+    /* ── GrapesJS dark-theme bleed-through fixes ──── */
+    .gjs-field input, .gjs-field select, .gjs-field textarea { color: var(--cb-text) !important; background-color: var(--cb-input-bg) !important; color-scheme: light; }
+    .gjs-sm-field input, .gjs-sm-field select { color: var(--cb-text) !important; }
+    .gjs-clm-field input, .gjs-clm-field select { color: var(--cb-text) !important; }
+    .gjs-color-main { color: var(--cb-text) !important; }
+    .gjs-sm-btn { color: var(--cb-text) !important; }
+    option { background: var(--cb-panel-bg) !important; color: var(--cb-text) !important; }
+    .gjs-editor, .gjs-pn-btn { color: var(--cb-text); }
+    .gjs-trt-trait .gjs-label { color: var(--cb-text-muted); }
+    input[type=number] { -webkit-appearance: auto !important; -moz-appearance: auto !important; appearance: auto !important; color-scheme: light; }
     `;
 }
 

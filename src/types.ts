@@ -15,6 +15,12 @@ export interface CertBuilderTheme {
   border?: string;
   /** Highlight / selection outline. Default: `#4a5568` */
   highlight?: string;
+  /** Main text color. Default: `#2d3748` */
+  text?: string;
+  /** Secondary/label text color. Default: `#718096` */
+  textMuted?: string;
+  /** Input/select/textarea background. Default: `#ffffff` */
+  inputBg?: string;
 }
 
 export interface CertBuilderOptions {
